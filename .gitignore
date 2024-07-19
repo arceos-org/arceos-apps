@@ -1,5 +1,6 @@
 /target
 /.vscode
+/.arceos
 .DS_Store
 Cargo.lock
 *.o
