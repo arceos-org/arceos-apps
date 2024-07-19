@@ -1,0 +1,166 @@
+name: Build CI
+
+on: [push, pull_request]
+
+jobs:
+  clippy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        rust-toolchain: [nightly]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@nightly
+      with:
+        toolchain: ${{ matrix.rust-toolchain }}
+        components: rust-src, clippy, rustfmt
+    - name: Setup ArceOS
+      run: ./scripts/setup.sh
+    - name: Check rust version
+      run: rustc --version --verbose
+    - name: Check code format
+      run: cargo fmt --all -- --check
+    - name: Clippy
+      run: cargo clippy --all-features
+
+  build-rust-apps:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        arch: [x86_64, riscv64, aarch64]
+        rust-toolchain: [nightly]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: ${{ matrix.rust-toolchain }}
+        components: rust-src, llvm-tools
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat
+    - uses: Swatinem/rust-cache@v2
+    - run: cargo install cargo-binutils
+    - run: ./scripts/setup.sh
+
+    - name: Build rust/helloworld
+      run: make ARCH=${{ matrix.arch }} A=rust/helloworld
+    - name: Build rust/memtest
+      run: make ARCH=${{ matrix.arch }} A=rust/memtest
+    - name: Build rust/exception
+      run: make ARCH=${{ matrix.arch }} A=rust/exception
+    - name: Build rust/display
+      run: make ARCH=${{ matrix.arch }} A=rust/display
+    - name: Build rust/task/yield
+      run: make ARCH=${{ matrix.arch }} A=rust/task/yield
+    - name: Build rust/task/parallel
+      run: make ARCH=${{ matrix.arch }} A=rust/task/parallel
+    - name: Build rust/task/sleep
+      run: make ARCH=${{ matrix.arch }} A=rust/task/sleep
+    - name: Build rust/task/priority
+      run: make ARCH=${{ matrix.arch }} A=rust/task/priority
+    - name: Build rust/task/tls
+      run: make ARCH=${{ matrix.arch }} A=rust/task/tls
+    - name: Build rust/fs/shell
+      run: make ARCH=${{ matrix.arch }} A=rust/fs/shell
+    - name: Build rust/net/echoserver
+      run: make ARCH=${{ matrix.arch }} A=rust/net/echoserver
+    - name: Build rust/net/httpclient
+      run: make ARCH=${{ matrix.arch }} A=rust/net/httpclient
+    - name: Build rust/net/httpserver
+      run: make ARCH=${{ matrix.arch }} A=rust/net/httpserver
+    - name: Build rust/net/udpserver
+      run: make ARCH=${{ matrix.arch }} A=rust/net/udpserver
+
+  build-c-apps:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        arch: [x86_64, riscv64, aarch64]
+        rust-toolchain: [nightly]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: ${{ matrix.rust-toolchain }}
+        components: rust-src, llvm-tools
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat
+    - uses: ./.github/workflows/actions/setup-musl
+      with:
+        arch: ${{ matrix.arch }}
+    - uses: Swatinem/rust-cache@v2
+    - run: cargo install cargo-binutils
+    - run: ./scripts/setup.sh
+
+    - name: Build c/helloworld
+      run: make ARCH=${{ matrix.arch }} A=c/helloworld
+    - name: Build c/memtest
+      run: make ARCH=${{ matrix.arch }} A=c/memtest
+    - name: Build c/sqlite3
+      run: make ARCH=${{ matrix.arch }} A=c/sqlite3
+    - name: Build c/httpclient
+      run: make ARCH=${{ matrix.arch }} A=c/httpclient
+    - name: Build c/httpserver
+      run: make ARCH=${{ matrix.arch }} A=c/httpserver
+    - name: Build c/udpserver
+      run: make ARCH=${{ matrix.arch }} A=c/udpserver
+    - name: Build c/iperf
+      run: make ARCH=${{ matrix.arch }} A=c/iperf
+    - name: Build c/redis
+      run: make ARCH=${{ matrix.arch }} A=c/redis SMP=4
+
+  build-for-other-platforms:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        rust-toolchain: [nightly]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: ${{ matrix.rust-toolchain }}
+        components: rust-src, llvm-tools
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat
+    - uses: ./.github/workflows/actions/setup-musl
+      with:
+        arch: x86_64
+    - uses: Swatinem/rust-cache@v2
+    - run: cargo install cargo-binutils
+    - run: ./scripts/setup.sh
+
+    - name: Build rust/helloworld for x86_64-pc-oslab
+      run: make PLATFORM=x86_64-pc-oslab A=rust/helloworld
+    - name: Build rust/net/httpserver for x86_64-pc-oslab
+      run: make PLATFORM=x86_64-pc-oslab A=rust/net/httpserver FEATURES=driver-ixgbe
+    - name: Build c/iperf for x86_64-pc-oslab
+      run: make PLATFORM=x86_64-pc-oslab A=c/iperf FEATURES=driver-ixgbe,driver-ramdisk
+    - name: Build c/redis for x86_64-pc-oslab
+      run: make PLATFORM=x86_64-pc-oslab A=c/redis FEATURES=driver-ixgbe,driver-ramdisk SMP=4
+
+    - name: Build rust/helloworld for aarch64-raspi4
+      run: make PLATFORM=aarch64-raspi4 A=rust/helloworld
+    - name: Build rust/fs/shell for aarch64-raspi4
+      run: make PLATFORM=aarch64-raspi4 A=rust/fs/shell FEATURES=driver-bcm2835-sdhci
+    - name: Build rust/helloworld for aarch64-bsta1000b
+      run: make PLATFORM=aarch64-bsta1000b A=rust/helloworld
+
+  build-for-std:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        rust-toolchain: [nightly]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: ${{ matrix.rust-toolchain }}
+    - name: Build apps for std
+      run: |
+        ./scripts/setup.sh
+        cargo build --all --exclude arceos-display

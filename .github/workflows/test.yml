@@ -1,0 +1,34 @@
+name: Test CI
+
+on: [push, pull_request]
+
+env:
+  qemu-version: 8.2.0
+
+jobs:
+  app-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        arch: [x86_64, riscv64, aarch64]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: nightly
+        components: rust-src
+    - uses: Swatinem/rust-cache@v2
+    - run: cargo install cargo-binutils
+    - uses: ./.github/workflows/actions/setup-qemu
+      with:
+        qemu-version: ${{ env.qemu-version }}
+    - uses: ./.github/workflows/actions/setup-musl
+      with:
+        arch: ${{ matrix.arch }}
+    - name: Run app tests
+      run: |
+        ./scripts/setup.sh
+        make disk_img
+        make test ARCH=${{ matrix.arch }}
