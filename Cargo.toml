@@ -1,0 +1,24 @@
+[workspace]
+resolver = "2"
+
+members = [
+    "rust/helloworld",
+    "rust/memtest",
+    "rust/exception",
+    "rust/display",
+    "rust/fs/shell",
+    "rust/net/echoserver",
+    "rust/net/httpclient",
+    "rust/net/httpserver",
+    "rust/net/udpserver",
+    "rust/net/bwbench",
+    "rust/task/parallel",
+    "rust/task/sleep",
+    "rust/task/yield",
+    "rust/task/priority",
+    "rust/task/tls",
+]
+
+[workspace.dependencies]
+axstd = { git = "https://github.com/arceos-org/arceos.git" }
+axnet = { git = "https://github.com/arceos-org/arceos.git" }

@@ -8,4 +8,4 @@ authors = ["ChengXiang Qi <kuangjux@outlook.com>"]
 
 [dependencies]
 axstd = { workspace = true, features = ["net"] }
-axnet = { path = "../../../modules/axnet" }
+axnet = { workspace = true }
