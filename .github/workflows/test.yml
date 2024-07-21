@@ -29,6 +29,6 @@ jobs:
         arch: ${{ matrix.arch }}
     - name: Run app tests
       run: |
-        ./scripts/setup.sh
+        ./scripts/get_deps.sh
         make disk_img
         make test ARCH=${{ matrix.arch }}
