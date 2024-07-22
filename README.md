@@ -64,7 +64,7 @@ Other arguments are the same as ArceOS's [Makefile](https://github.com/arceos-or
 For example, to run the [httpserver](rust/net/httpserver/) on `qemu-system-aarch64` with 4 cores and log level `info`:
 
 ```bash
-make A=apps/net/httpserver ARCH=aarch64 LOG=info SMP=4 run NET=y
+make A=rust/net/httpserver ARCH=aarch64 LOG=info SMP=4 run NET=y
 ```
 
 Note that the `NET=y` argument is required to enable the network device in QEMU. These arguments (`BLK`, `GRAPHIC`, etc.) only take effect at runtime not build time.
@@ -76,7 +76,7 @@ Note that the `NET=y` argument is required to enable the network device in QEMU.
 | [helloworld](rust/helloworld/) | | | A minimal app that just prints a string |
 | [exception](rust/exception/) | | | Exception handling test |
 | [memtest](rust/memtest/) | alloc | axalloc | Dynamic memory allocation test |
-| [display](rust/display/) | display | axdisplay | Graphic/GUI test |
+| [display](rust/display/) | display | axdriver, axdisplay | Graphic/GUI test |
 | [yield](rust/task/yield/) | multitask | axalloc, axtask | Multi-threaded yielding test |
 | [sleep](rust/task/sleep/) | multitask, irq | axalloc, axtask | Thread sleeping test |
 | [parallel](rust/task/parallel/) | alloc, multitask | axalloc, axtask | Parallel computing test (to test synchronization & mutex) |
@@ -85,7 +85,7 @@ Note that the `NET=y` argument is required to enable the network device in QEMU.
 | [shell](rust/fs/shell/) | alloc, fs | axalloc, axdriver, axfs | A simple shell that responds to filesystem operations |
 | [httpclient](rust/net/httpclient/) | net | axalloc, axdriver, axnet | A simple client that sends an HTTP request and then prints the response |
 | [udpserver](rust/net/udpserver/) | net | axalloc, axdriver, axnet | A single-threaded echo server using UDP protocol |
-| [echoserver](rust/net/echoserver/) | alloc, multitask, net | axalloc, axdriver, axnet, axtask | A multi-threaded TCP server that reverses messages sent by the client  |
+| [echoserver](rust/net/echoserver/) | alloc, multitask, net | axalloc, axdriver, axnet, axtask | A multi-threaded TCP server that reverses messages sent by the client |
 | [httpserver](rust/net/httpserver/) | alloc, multitask, net | axalloc, axdriver, axnet, axtask | A multi-threaded HTTP server that serves a static web page |
 | [bwbench](rust/net/bwbench/) | net | axalloc, axdriver, axnet | Network bandwidth benchmark |
 

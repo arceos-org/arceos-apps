@@ -42,7 +42,7 @@ const CONTENT: &str = r#"<html>
   </center>
   <hr>
   <center>
-    <i>Powered by <a href="https://github.com/arceos-org/arceos/tree/main/apps/net/httpserver">ArceOS example HTTP server</a> v0.1.0</i>
+    <i>Powered by <a href="https://github.com/arceos-org/arceos-apps/tree/main/rust/net/httpserver">ArceOS example HTTP server</a> v0.1.0</i>
   </center>
 </body>
 </html>
