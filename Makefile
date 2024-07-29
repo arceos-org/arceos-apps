@@ -13,7 +13,7 @@ all: build
 ax_root:
 	@./scripts/set_ax_root.sh $(AX_ROOT)
 
-build run justrun debug fmt disasm disk_img clean clean_c: ax_root
+build run justrun debug disasm disk_img clean clean_c: ax_root
 	@make -C $(AX_ROOT) A=$(APP) $@
 
 test:
@@ -23,4 +23,4 @@ else
 	@./scripts/app_test.sh
 endif
 
-.PHONY: all ax_root build run justrun debug fmt disasm disk_img clean clean_c test
+.PHONY: all ax_root build run justrun debug disasm disk_img clean clean_c test
