@@ -22,4 +22,3 @@ exclude = [".arceos"]
 
 [workspace.dependencies]
 axstd = { git = "https://github.com/arceos-org/arceos.git" }
-axnet = { git = "https://github.com/arceos-org/arceos.git" }

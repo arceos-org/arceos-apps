@@ -1,7 +1,9 @@
 #![no_std]
 #![no_main]
 
-extern crate axstd;
+extern crate axstd as std;
+
+use std::os::arceos::modules::axnet;
 
 #[no_mangle]
 fn main() {
