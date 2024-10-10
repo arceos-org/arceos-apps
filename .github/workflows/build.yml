@@ -61,6 +61,8 @@ jobs:
       run: make ARCH=${{ matrix.arch }} A=rust/task/priority
     - name: Build rust/task/tls
       run: make ARCH=${{ matrix.arch }} A=rust/task/tls
+    - name: Build rust/task/irq
+      run: make ARCH=${{ matrix.arch }} A=rust/task/irq
     - name: Build rust/fs/shell
       run: make ARCH=${{ matrix.arch }} A=rust/fs/shell
     - name: Build rust/net/echoserver
