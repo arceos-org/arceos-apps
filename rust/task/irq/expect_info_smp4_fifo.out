@@ -1,0 +1,26 @@
+smp = 4
+build_mode = release
+log_level = warn
+
+Hello, main task, id = ThreadId([0-9]\+)
+Hello, task 0! id = ThreadId([0-9]\+)
+Hello, task 1! id = ThreadId([0-9]\+)
+Hello, task 2! id = ThreadId([0-9]\+)
+Hello, task 3! id = ThreadId([0-9]\+)
+Hello, task 4! id = ThreadId([0-9]\+)
+Hello, task 5! id = ThreadId([0-9]\+)
+Hello, task 6! id = ThreadId([0-9]\+)
+Hello, task 7! id = ThreadId([0-9]\+)
+Hello, task 8! id = ThreadId([0-9]\+)
+Hello, task 9! id = ThreadId([0-9]\+)
+Task 0! id = ThreadId([0-9]\+) irq state test ok
+Task 1! id = ThreadId([0-9]\+) irq state test ok
+Task 2! id = ThreadId([0-9]\+) irq state test ok
+Task 3! id = ThreadId([0-9]\+) irq state test ok
+Task 4! id = ThreadId([0-9]\+) irq state test ok
+Task 5! id = ThreadId([0-9]\+) irq state test ok
+Task 6! id = ThreadId([0-9]\+) irq state test ok
+Task 7! id = ThreadId([0-9]\+) irq state test ok
+Task 8! id = ThreadId([0-9]\+) irq state test ok
+Task 9! id = ThreadId([0-9]\+) irq state test ok
+Task irq state tests run OK!
