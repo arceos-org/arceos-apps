@@ -85,6 +85,7 @@ fn test_wait_queue() {
 
     static WQ1: WaitQueue = WaitQueue::new();
     static WQ2: WaitQueue = WaitQueue::new();
+    static WQ3: WaitQueue = WaitQueue::new();
     static COUNTER: AtomicUsize = AtomicUsize::new(0);
 
     println!("Hello, main task test_wait_queue()!");
@@ -94,7 +95,7 @@ fn test_wait_queue() {
             assert_irq_enabled();
 
             // equals to sleep(100ms)
-            WQ1.wait_timeout_until(std::time::Duration::from_millis(100), || false);
+            WQ3.wait_timeout_until(std::time::Duration::from_millis(100), || false);
             assert_irq_enabled_and_disabled();
 
             COUNTER.fetch_add(1, Ordering::Relaxed);
