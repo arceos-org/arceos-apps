@@ -17,6 +17,7 @@ members = [
     "rust/task/yield",
     "rust/task/priority",
     "rust/task/tls",
+    "rust/task/irq",
 ]
 exclude = [".arceos"]
 
