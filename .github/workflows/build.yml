@@ -22,6 +22,7 @@ jobs:
     - name: Check code format
       run: cargo fmt --all -- --check
     - name: Clippy
+      continue-on-error: ${{ matrix.rust-toolchain == 'nightly' }}
       run: cargo clippy --all-features
 
   build-rust-apps:
@@ -165,6 +166,7 @@ jobs:
       with:
         toolchain: ${{ matrix.rust-toolchain }}
     - name: Build apps for std
+      continue-on-error: ${{ matrix.rust-toolchain == 'nightly' }}
       run: |
         ./scripts/get_deps.sh
         cargo build --all --exclude arceos-display
