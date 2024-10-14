@@ -19,6 +19,7 @@ members = [
     "rust/task/tls",
     "rust/task/irq",
     "rust/task/affinity",
+    "rust/task/wait_queue",
 ]
 exclude = [".arceos"]
 

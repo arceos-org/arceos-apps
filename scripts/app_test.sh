@@ -116,6 +116,7 @@ if [ -z "$1" ]; then
         "rust/task/tls"
         "rust/task/irq"
         "rust/task/affinity"
+        "rust/task/wait_queue"
         "rust/net/httpclient"
         "c/helloworld"
         "c/memtest"
