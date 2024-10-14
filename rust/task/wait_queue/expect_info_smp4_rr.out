@@ -2,7 +2,7 @@ smp = 4
 build_mode = release
 log_level = info
 
-Primary CPU 0 started,
+CPU 0 started
 Found physcial memory regions:
  .text (READ | EXECUTE | RESERVED)
  .rodata (READ | RESERVED)
