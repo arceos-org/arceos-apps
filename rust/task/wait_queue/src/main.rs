@@ -27,7 +27,7 @@ fn test_wait() {
         thread::spawn(move || {
             COUNTER.fetch_add(1, Ordering::Relaxed);
             api::ax_wait_queue_wake(&WQ1, 1); // WQ1.wait_until()
-            api::ax_wait_queue_wait(&WQ2);
+            api::ax_wait_queue_wait(&WQ2, None);
 
             COUNTER.fetch_sub(1, Ordering::Relaxed);
             api::ax_wait_queue_wake(&WQ1, 1); // WQ1.wait_until()
