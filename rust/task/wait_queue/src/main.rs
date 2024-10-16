@@ -11,8 +11,6 @@ use std::time::Duration;
 
 #[cfg(feature = "axstd")]
 use std::os::arceos::api::task::{self as api, AxWaitQueueHandle};
-#[cfg(feature = "axstd")]
-use std::os::arceos::modules::axtask;
 
 const NUM_TASKS: usize = 16;
 
@@ -34,19 +32,11 @@ fn test_wait() {
         });
     }
 
-    println!(
-        "task {:?} is waiting for tasks to start...",
-        axtask::current().id()
-    );
     api::ax_wait_queue_wait_until(&WQ1, || COUNTER.load(Ordering::Relaxed) == NUM_TASKS, None);
     assert_eq!(COUNTER.load(Ordering::Relaxed), NUM_TASKS);
 
     api::ax_wait_queue_wake(&WQ2, u32::MAX); // WQ2.wait()
 
-    println!(
-        "task {:?} is waiting for tasks to finish...",
-        axtask::current().id()
-    );
     api::ax_wait_queue_wait_until(&WQ1, || COUNTER.load(Ordering::Relaxed) == 0, None);
     assert_eq!(COUNTER.load(Ordering::Relaxed), 0);
 
@@ -149,8 +139,8 @@ fn test_wait_timeout_until() {
                 Some(Duration::from_millis(time_to_wait_in_millis)),
             );
             println!(
-                "wait_timeout_until: task {:?} woken up by {}",
-                axtask::current().id(),
+                "wait_timeout_until: {:?} woken up by {}",
+                thread::current().id(),
                 if timeout { "timeout" } else { "notification" }
             );
             COUNTER2.fetch_add(1, Ordering::Relaxed);
@@ -172,8 +162,6 @@ fn test_wait_timeout_until() {
     assert_eq!(COUNTER2.load(Ordering::Relaxed), NUM_TASKS);
 
     println!("wait_timeout_until: test tasks woken up by notification or timeout, test OK!");
-
-    println!("wait_timeout_until: all tests OK!");
 }
 
 #[cfg_attr(feature = "axstd", no_mangle)]

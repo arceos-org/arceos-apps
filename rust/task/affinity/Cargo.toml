@@ -11,4 +11,3 @@ sched_cfs = ["axstd?/sched_cfs"]
 
 [dependencies]
 axstd = { workspace = true, features = ["multitask"], optional = true }
-cpumask = { git = "https://github.com/arceos-org/cpumask.git" }

@@ -5,17 +5,15 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
-use cpumask::CpuMask;
 use std::sync::atomic::{AtomicUsize, Ordering};
+use std::thread;
 
 #[cfg(feature = "axstd")]
-use axtask::TaskInner;
+use std::os::arceos::api::config::SMP;
 #[cfg(feature = "axstd")]
-use std::os::arceos::modules::axconfig;
+use std::os::arceos::api::task::{ax_set_current_affinity, AxCpuMask};
 #[cfg(feature = "axstd")]
-use std::os::arceos::modules::axhal;
-#[cfg(feature = "axstd")]
-use std::os::arceos::modules::axtask;
+use std::os::arceos::modules::axhal::cpu::this_cpu_id;
 
 const KERNEL_STACK_SIZE: usize = 0x40000; // 256 KiB
 
@@ -28,42 +26,46 @@ static FINISHED_TASKS: AtomicUsize = AtomicUsize::new(0);
 fn main() {
     println!("Hello, main task!");
     for i in 0..NUM_TASKS {
-        let cpu_id = i % axconfig::SMP;
-        let task = TaskInner::new(
-            move || {
-                println!("Hello, task ({})! id = {:?}", i, axtask::current().id());
-                for _t in 0..NUM_TIMES {
-                    // Test CPU affinity here.
-                    assert_eq!(axhal::cpu::this_cpu_id(), cpu_id, "CPU affinity failed!");
-                    axtask::yield_now();
-                }
+        let cpu_id = i % SMP;
+        thread::spawn(move || {
+            // Initialize cpu affinity here.
+            #[cfg(feature = "axstd")]
+            assert!(
+                ax_set_current_affinity(AxCpuMask::one_shot(cpu_id)).is_ok(),
+                "Initialize CPU affinity failed!"
+            );
 
-                // Change cpu affinity here.
-                let mut cpumask = CpuMask::full();
+            println!("Hello, task ({})! id = {:?}", i, thread::current().id());
+            for _t in 0..NUM_TIMES {
+                // Test CPU affinity here.
+                #[cfg(feature = "axstd")]
+                assert_eq!(this_cpu_id(), cpu_id, "CPU affinity tests failed!");
+                thread::yield_now();
+            }
+
+            // Change cpu affinity here.
+            #[cfg(feature = "axstd")]
+            {
+                let mut cpumask = AxCpuMask::full();
                 cpumask.set(cpu_id, false);
                 assert!(
-                    axtask::set_current_affinity(cpumask),
+                    ax_set_current_affinity(cpumask).is_ok(),
                     "Change CPU affinity failed!"
                 );
+            }
 
-                for _t in 0..NUM_TIMES {
-                    // Test CPU affinity here.
-                    assert_ne!(axhal::cpu::this_cpu_id(), cpu_id, "CPU affinity failed!");
-                    axtask::yield_now();
-                }
-                let _ = FINISHED_TASKS.fetch_add(1, Ordering::Relaxed);
-            },
-            "".into(),
-            crate::KERNEL_STACK_SIZE,
-        );
-
-        // Initialized cpu affinity here.
-        task.set_cpumask(CpuMask::one_shot(cpu_id));
-        axtask::spawn_task(task);
+            for _t in 0..NUM_TIMES {
+                // Test CPU affinity here.
+                #[cfg(feature = "axstd")]
+                assert_ne!(this_cpu_id(), cpu_id, "CPU affinity changes failed!");
+                thread::yield_now();
+            }
+            let _ = FINISHED_TASKS.fetch_add(1, Ordering::Relaxed);
+        });
     }
 
     while FINISHED_TASKS.load(Ordering::Relaxed) < NUM_TASKS {
-        axtask::yield_now();
+        thread::yield_now();
     }
 
     println!("Task affinity tests run OK!");
