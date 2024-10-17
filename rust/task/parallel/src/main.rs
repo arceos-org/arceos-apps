@@ -22,7 +22,7 @@ fn barrier() {
     static BARRIER_COUNT: AtomicUsize = AtomicUsize::new(0);
 
     BARRIER_COUNT.fetch_add(1, Ordering::Relaxed);
-    api::ax_wait_queue_wait(
+    api::ax_wait_queue_wait_until(
         &BARRIER_WQ,
         || BARRIER_COUNT.load(Ordering::Relaxed) == NUM_TASKS,
         None,
@@ -60,7 +60,7 @@ fn main() {
     #[cfg(feature = "axstd")]
     {
         // equals to sleep(500ms)
-        let timeout = api::ax_wait_queue_wait(
+        let timeout = api::ax_wait_queue_wait_until(
             &AxWaitQueueHandle::new(),
             || false,
             Some(std::time::Duration::from_millis(500)),
