@@ -15,8 +15,6 @@ use std::os::arceos::api::task::{ax_set_current_affinity, AxCpuMask};
 #[cfg(feature = "axstd")]
 use std::os::arceos::modules::axhal::cpu::this_cpu_id;
 
-const KERNEL_STACK_SIZE: usize = 0x40000; // 256 KiB
-
 const NUM_TASKS: usize = 10;
 const NUM_TIMES: usize = 100;
 static FINISHED_TASKS: AtomicUsize = AtomicUsize::new(0);
@@ -26,6 +24,7 @@ static FINISHED_TASKS: AtomicUsize = AtomicUsize::new(0);
 fn main() {
     println!("Hello, main task!");
     for i in 0..NUM_TASKS {
+        #[cfg(feature = "axstd")]
         let cpu_id = i % SMP;
         thread::spawn(move || {
             // Initialize cpu affinity here.
@@ -60,11 +59,11 @@ fn main() {
                 assert_ne!(this_cpu_id(), cpu_id, "CPU affinity changes failed!");
                 thread::yield_now();
             }
-            let _ = FINISHED_TASKS.fetch_add(1, Ordering::Relaxed);
+            let _ = FINISHED_TASKS.fetch_add(1, Ordering::SeqCst);
         });
     }
 
-    while FINISHED_TASKS.load(Ordering::Relaxed) < NUM_TASKS {
+    while FINISHED_TASKS.load(Ordering::SeqCst) < NUM_TASKS {
         thread::yield_now();
     }
 
