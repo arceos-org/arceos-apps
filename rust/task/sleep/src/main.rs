@@ -22,7 +22,7 @@ fn main() {
     println!("main task sleep for {:?}", elapsed);
 
     // backgroud ticks, 0.5s x 30 = 15s
-    thread::spawn(|| {
+    let background_thread = thread::spawn(|| {
         for i in 0..30 {
             println!("  tick {}", i);
             thread::sleep(Duration::from_millis(500));
@@ -47,5 +47,9 @@ fn main() {
     while FINISHED_TASKS.load(Ordering::Relaxed) < NUM_TASKS {
         thread::sleep(Duration::from_millis(10));
     }
+
+    // Wait for background ticks to finish.
+    background_thread.join().unwrap();
+
     println!("Sleep tests run OK!");
 }
