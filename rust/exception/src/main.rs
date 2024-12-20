@@ -24,7 +24,7 @@ fn raise_page_fault() {
     use axhal::{mem::VirtAddr, paging::MappingFlags};
     use std::os::arceos::modules::axhal;
 
-    #[linkme::distributed_slice(axhal::trap::PAGE_FAULT)]
+    #[unsafe(linkme::distributed_slice(axhal::trap::PAGE_FAULT))]
     fn page_fault_handler(vaddr: VirtAddr, access_flags: MappingFlags, is_user: bool) -> bool {
         println!(
             "Page fault @ {:#x}, access_flags: {:?}, is_user: {}",
