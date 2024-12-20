@@ -11,4 +11,4 @@ axstd = ["linkme", "dep:axstd"]
 
 [dependencies]
 axstd = { workspace = true, optional = true, features = ["paging"] }
-linkme = { version = "0.3", optional = true }
+linkme = { version = "0.3.31", optional = true }
