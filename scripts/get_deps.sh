@@ -3,7 +3,7 @@
 AX_ROOT=.arceos
 
 test ! -d "$AX_ROOT" && echo "Cloning repositories ..." || true
-test ! -d "$AX_ROOT" && git clone https://github.com/arceos-org/arceos "$AX_ROOT" --depth=1 || true
+test ! -d "$AX_ROOT" && git clone -b axsync https://github.com/arceos-org/arceos "$AX_ROOT" --depth=1 || true
 
 echo "Copying Cargo.lock ..."
 cp "$AX_ROOT/Cargo.lock" Cargo.lock
