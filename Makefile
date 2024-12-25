@@ -1,5 +1,5 @@
 A ?= rust/helloworld
-AX_ROOT ?= $(PWD)/.arceos
+AX_ROOT ?= $(shell cat .axroot 2>/dev/null)
 
 APP := $(A)
 ifeq ($(filter /%,$(A)),)
@@ -8,12 +8,14 @@ ifeq ($(filter /%,$(A)),)
   endif
 endif
 
+$(if $(V), $(info AX_ROOT: "$(AX_ROOT)"))
+
 all: build
 
-ax_root:
+chaxroot:
 	@./scripts/set_ax_root.sh $(AX_ROOT)
 
-build run justrun debug disasm disk_img clean clean_c: ax_root
+defconfig oldconfig build run justrun debug disasm disk_img clean clean_c:
 	@make -C $(AX_ROOT) A=$(APP) $@
 
 test:
@@ -23,4 +25,4 @@ else
 	@./scripts/app_test.sh
 endif
 
-.PHONY: all ax_root build run justrun debug disasm disk_img clean clean_c test
+.PHONY: all chaxroot defconfig oldconfig build run justrun debug disasm disk_img clean clean_c test
