@@ -31,7 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64]
+        arch: [x86_64, riscv64, aarch64, loongarch64]
         rust-toolchain: [nightly]
     steps:
     - uses: actions/checkout@v4
@@ -39,7 +39,7 @@ jobs:
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat, loongarch64-unknown-none
     - uses: Swatinem/rust-cache@v2
     - run: cargo install cargo-binutils
     - run: ./scripts/get_deps.sh
@@ -85,7 +85,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64]
+        arch: [x86_64, riscv64, aarch64, loongarch64]
         rust-toolchain: [nightly]
     steps:
     - uses: actions/checkout@v4
@@ -93,7 +93,7 @@ jobs:
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat, loongarch64-unknown-none
     - uses: ./.github/workflows/actions/setup-musl
       with:
         arch: ${{ matrix.arch }}
