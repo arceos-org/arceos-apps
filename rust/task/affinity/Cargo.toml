@@ -11,3 +11,4 @@ sched_cfs = ["axstd?/sched_cfs"]
 
 [dependencies]
 axstd = { workspace = true, features = ["multitask"], optional = true }
+axhal_plat_impl = { workspace = true, optional = true }

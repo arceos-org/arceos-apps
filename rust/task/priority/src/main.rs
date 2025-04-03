@@ -5,6 +5,9 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
+#[cfg(feature = "axstd")]
+extern crate axhal_plat_impl;
+
 use std::sync::Arc;
 use std::{thread, time};
 use std::{vec, vec::Vec};

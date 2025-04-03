@@ -5,6 +5,9 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
+#[cfg(feature = "axstd")]
+extern crate axhal_plat_impl;
+
 use std::io;
 use std::net::{ToSocketAddrs, UdpSocket};
 

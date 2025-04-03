@@ -4,6 +4,9 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
+#[cfg(feature = "axstd")]
+extern crate axhal_plat_impl;
+
 use std::arch::asm;
 use std::println;
 
@@ -31,7 +34,7 @@ fn raise_page_fault() {
             vaddr, access_flags, is_user
         );
         println!("Page fault test OK!");
-        axhal::misc::terminate();
+        axhal::power::system_off();
     }
 
     let fault_addr = 0xdeadbeef as *mut u8;

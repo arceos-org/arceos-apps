@@ -12,3 +12,4 @@ axstd = ["linkme", "dep:axstd"]
 [dependencies]
 axstd = { workspace = true, optional = true, features = ["paging"] }
 linkme = { version = "0.3.31", optional = true }
+axhal_plat_impl = { workspace = true, optional = true }

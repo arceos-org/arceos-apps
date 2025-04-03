@@ -5,6 +5,9 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
+#[cfg(feature = "axstd")]
+extern crate axhal_plat_impl;
+
 macro_rules! path_to_str {
     ($path:expr) => {{
         #[cfg(not(feature = "axstd"))]

@@ -3,6 +3,8 @@
 
 extern crate axstd as std;
 
+extern crate axhal_plat_impl;
+
 use std::os::arceos::modules::axnet;
 
 #[no_mangle]

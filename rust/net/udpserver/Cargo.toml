@@ -6,3 +6,4 @@ authors = ["Dashuai Wu <wudashuaijss@foxmail.com>"]
 
 [dependencies]
 axstd = { workspace = true, features = ["net"], optional = true }
+axhal_plat_impl = { workspace = true, optional = true }

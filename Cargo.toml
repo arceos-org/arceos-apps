@@ -24,4 +24,5 @@ members = [
 exclude = [".arceos"]
 
 [workspace.dependencies]
-axstd = { git = "https://github.com/arceos-org/arceos.git" }
+axstd = { git = "https://github.com/oscomp/arceos.git" }
+axhal_plat_impl = { git = "https://github.com/oscomp/axhal_crates.git" }

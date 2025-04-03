@@ -7,3 +7,4 @@ description = "A simple demo to test the wait queue for tasks under ArceOS"
 
 [dependencies]
 axstd = { workspace = true, features = ["multitask", "irq"], optional = true }
+axhal_plat_impl = { workspace = true, optional = true }
