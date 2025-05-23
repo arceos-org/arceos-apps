@@ -5,7 +5,7 @@ pub fn assert_irq_enabled() {
     #[cfg(feature = "axstd")]
     {
         assert!(
-            axhal::arch::irqs_enabled(),
+            axhal::asm::irqs_enabled(),
             "Task id = {:?} IRQs should be enabled!",
             std::thread::current().id()
         );
@@ -16,7 +16,7 @@ pub fn assert_irq_disabled() {
     #[cfg(feature = "axstd")]
     {
         assert!(
-            !axhal::arch::irqs_enabled(),
+            !axhal::asm::irqs_enabled(),
             "Task id = {:?} IRQs should be disabled!",
             std::thread::current().id()
         );
@@ -32,10 +32,10 @@ pub fn assert_irq_enabled_and_disabled() {
 
 pub fn disable_irqs() {
     #[cfg(feature = "axstd")]
-    axhal::arch::disable_irqs()
+    axhal::asm::disable_irqs()
 }
 
 pub fn enable_irqs() {
     #[cfg(feature = "axstd")]
-    axhal::arch::enable_irqs()
+    axhal::asm::enable_irqs()
 }

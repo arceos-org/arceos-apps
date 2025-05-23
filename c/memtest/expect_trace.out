@@ -24,7 +24,6 @@ map_region(PA:0x[0-9a-f]\+): \[0x[0-9a-f]\+, 0x[0-9a-f]\+) READ | WRITE
 map_region(PA:0x[0-9a-f]\+): \[0x[0-9a-f]\+, 0x[0-9a-f]\+) READ | WRITE
 map_region(PA:0x[0-9a-f]\+): \[0x[0-9a-f]\+, 0x[0-9a-f]\+) READ | WRITE | DEVICE
 map_region(PA:0x[0-9a-f]\+): \[0x[0-9a-f]\+, 0x[0-9a-f]\+) READ | WRITE
-set page table root: PA:0x[0-9a-f]\+ => PA:0x[0-9a-f]\+
 Primary CPU 0 init OK.
 Running memory tests...
 top of heap=0x[0-9a-f]\{16\}
