@@ -41,6 +41,9 @@ jobs:
         components: rust-src, llvm-tools
         targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat, loongarch64-unknown-none
     - uses: Swatinem/rust-cache@v2
+      with:
+        shared-key: cargo-bin-cache
+        cache-targets: false
     - run: cargo install cargo-binutils
     - run: ./scripts/get_deps.sh
 
@@ -94,10 +97,13 @@ jobs:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
         targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat, loongarch64-unknown-none
-    - uses: ./.github/workflows/actions/setup-musl
+    - uses: arceos-org/setup-musl@v1
       with:
         arch: ${{ matrix.arch }}
     - uses: Swatinem/rust-cache@v2
+      with:
+        shared-key: cargo-bin-cache
+        cache-targets: false
     - run: cargo install cargo-binutils
     - run: ./scripts/get_deps.sh
 
@@ -132,10 +138,13 @@ jobs:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
         targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat
-    - uses: ./.github/workflows/actions/setup-musl
+    - uses: arceos-org/setup-musl@v1
       with:
         arch: x86_64
     - uses: Swatinem/rust-cache@v2
+      with:
+        shared-key: cargo-bin-cache
+        cache-targets: false
     - run: cargo install cargo-binutils
     - run: ./scripts/get_deps.sh
 
