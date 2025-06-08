@@ -33,7 +33,7 @@ fn raise_page_fault() {
             vaddr, access_flags, is_user
         );
         println!("Page fault test OK!");
-        axhal::misc::terminate();
+        axhal::power::system_off();
     }
 
     let fault_addr = 0xdeadbeef as *mut u8;

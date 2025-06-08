@@ -13,7 +13,7 @@ use std::os::arceos::api::config::SMP;
 #[cfg(feature = "axstd")]
 use std::os::arceos::api::task::{ax_set_current_affinity, AxCpuMask};
 #[cfg(feature = "axstd")]
-use std::os::arceos::modules::axhal::cpu::this_cpu_id;
+use std::os::arceos::modules::axhal::percpu::this_cpu_id;
 
 const KERNEL_STACK_SIZE: usize = 0x40000; // 256 KiB
 
