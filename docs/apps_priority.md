@@ -2,23 +2,23 @@
 
 | App | Enabled features | Extra modules | Description |
 |-|-|-|-|
-| [priority](../rust/task/priority/) | alloc, multitask, sched_fifo, sched_rr, sched_cfs | axalloc, axtask | Task priority test |
+| [priority](../rust/task/priority/) | alloc, multitask, sched-fifo, sched-rr, sched-cfs | axalloc, axtask | Task priority test |
 
 # RUN
 ```shell
-make A=rust/task/priority ARCH=riscv64 SMP=1 APP_FEATURES=sched_cfs run LOG=info
+make A=rust/task/priority ARCH=riscv64 SMP=1 APP_FEATURES=sched-cfs run LOG=info
 ```
-Other choises of APP_FEATURES: sched_fifo, sched_rr
+Other choises of APP_FEATURES: sched-fifo, sched-rr
 
 ## Using multicore
 ```shell
-make A=rust/task/sched-realtime ARCH=riscv64 SMP=4 APP_FEATURES=sched_cfs run LOG=info
+make A=rust/task/sched-realtime ARCH=riscv64 SMP=4 APP_FEATURES=sched-cfs run LOG=info
 ```
-Other choises of APP_FEATURES: sched_fifo, sched_rr
+Other choises of APP_FEATURES: sched-fifo, sched-rr
 
 # RESULT
 ```console
-$ make A=rust/task/priority ARCH=riscv64 SMP=1 APP_FEATURES=sched_cfs run LOG=info
+$ make A=rust/task/priority ARCH=riscv64 SMP=1 APP_FEATURES=sched-cfs run LOG=info
 ...
 part 0: TaskId(4) [0, 40)
 part 1: TaskId(5) [0, 40)

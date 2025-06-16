@@ -111,7 +111,7 @@ fn main() {
     }
 
     #[cfg(feature = "axstd")]
-    if cfg!(feature = "sched_cfs") && option_env!("AX_SMP") == Some("1") {
+    if cfg!(feature = "sched-cfs") && option_env!("AX_SMP") == Some("1") {
         assert!(
             leave_times[0] > leave_times[1]
                 && leave_times[1] > leave_times[2]

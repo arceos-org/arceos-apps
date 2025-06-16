@@ -3,4 +3,4 @@ paging
 net
 fs
 select
-fp_simd
+fp-simd
