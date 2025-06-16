@@ -104,6 +104,6 @@ Note that the `NET=y` argument is required to enable the network device in QEMU.
 | [httpclient](c/httpclient/) | alloc, net | axalloc, axdriver, axnet | A simple client that sends an HTTP request and then prints the response |
 | [udpserver](c/udpserver/) | alloc, net | axalloc, axdriver, axnet | A single-threaded echo server using UDP protocol |
 | [httpserver](c/httpserver/) | alloc, net | axalloc, axdriver, axnet | A single-threaded HTTP server that serves a static web page |
-| [sqlite3](c/sqlite3/) | fp_simd, alloc, fs | axalloc, axdriver, axfs | Porting of [SQLite3](https://sqlite.org/index.html) |
-| [iperf](c/iperf/) | fp_simd, alloc, fs, net, select | axalloc, axdriver, axfs, axnet | Porting of [iPerf3](https://iperf.fr/) |
-| [redis](c/redis/) | fp_simd, alloc, irq, multitask, fs, net, pipe, epoll | axalloc, axdriver, axtask, axfs, axnet | Porting of [Redis](https://redis.io/) |
+| [sqlite3](c/sqlite3/) | fp-simd, alloc, fs | axalloc, axdriver, axfs | Porting of [SQLite3](https://sqlite.org/index.html) |
+| [iperf](c/iperf/) | fp-simd, alloc, fs, net, select | axalloc, axdriver, axfs, axnet | Porting of [iPerf3](https://iperf.fr/) |
+| [redis](c/redis/) | fp-simd, alloc, irq, multitask, fs, net, pipe, epoll | axalloc, axdriver, axtask, axfs, axnet | Porting of [Redis](https://redis.io/) |

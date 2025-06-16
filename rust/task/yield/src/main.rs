@@ -17,11 +17,11 @@ fn main() {
         thread::spawn(move || {
             println!("Hello, task {}! id = {:?}", i, thread::current().id());
 
-            #[cfg(all(not(feature = "sched_rr"), not(feature = "sched_cfs")))]
+            #[cfg(all(not(feature = "sched-rr"), not(feature = "sched-cfs")))]
             thread::yield_now();
 
             let _order = FINISHED_TASKS.fetch_add(1, Ordering::Relaxed);
-            #[cfg(not(feature = "sched_cfs"))]
+            #[cfg(not(feature = "sched-cfs"))]
             if option_env!("AX_SMP") == Some("1") {
                 assert!(_order == i); // FIFO scheduler
             }
@@ -29,7 +29,7 @@ fn main() {
     }
     println!("Hello, main task!");
     while FINISHED_TASKS.load(Ordering::Relaxed) < NUM_TASKS {
-        #[cfg(all(not(feature = "sched_rr"), not(feature = "sched_cfs")))]
+        #[cfg(all(not(feature = "sched-rr"), not(feature = "sched-cfs")))]
         thread::yield_now();
     }
     println!("Task yielding tests run OK!");

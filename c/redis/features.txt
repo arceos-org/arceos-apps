@@ -1,6 +1,6 @@
 alloc
 paging
-fp_simd
+fp-simd
 irq
 multitask
 fs
