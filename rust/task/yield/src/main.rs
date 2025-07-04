@@ -21,8 +21,10 @@ fn main() {
             thread::yield_now();
 
             let _order = FINISHED_TASKS.fetch_add(1, Ordering::Relaxed);
-            #[cfg(not(feature = "sched-cfs"))]
-            if option_env!("AX_SMP") == Some("1") {
+            #[cfg(feature = "axstd")]
+            if cfg!(not(feature = "sched-cfs"))
+                && thread::available_parallelism().unwrap().get() == 1
+            {
                 assert!(_order == i); // FIFO scheduler
             }
         });

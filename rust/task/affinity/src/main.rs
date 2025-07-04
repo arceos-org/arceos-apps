@@ -9,8 +9,6 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::thread;
 
 #[cfg(feature = "axstd")]
-use std::os::arceos::api::config::SMP;
-#[cfg(feature = "axstd")]
 use std::os::arceos::api::task::{ax_set_current_affinity, AxCpuMask};
 #[cfg(feature = "axstd")]
 use std::os::arceos::modules::axhal::percpu::this_cpu_id;
@@ -26,7 +24,7 @@ static FINISHED_TASKS: AtomicUsize = AtomicUsize::new(0);
 fn main() {
     println!("Hello, main task!");
     for i in 0..NUM_TASKS {
-        let cpu_id = i % SMP;
+        let cpu_id = i % thread::available_parallelism().unwrap().get();
         thread::spawn(move || {
             // Initialize cpu affinity here.
             #[cfg(feature = "axstd")]
