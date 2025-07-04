@@ -269,7 +269,8 @@ MSET (10 keys): 183150.19 requests per second
 
 ## Compile and Run
 
-- `make A=c/redis LOG=error PLATFORM=x86_64-pc-oslab SMP=4 FEATURES=driver-ixgbe,driver-ramdisk IP=10.2.2.2 GW=10.2.2.1`
+- `./scripts/get_deps.sh`
+- `make A=c/redis LOG=error MYPLAT=<path_to_arceos>/configs/custom/x86_64-pc-oslab.toml SMP=4 FEATURES=driver-ixgbe,driver-ramdisk IP=10.2.2.2 GW=10.2.2.1`
 - Copy `redis_x86_64-pc-oslab.elf` to `/boot`, then reboot.
 - Enter `grub` then boot the PC by ArceOS Redis.
 - Connect to ArceOS-Redis server by:

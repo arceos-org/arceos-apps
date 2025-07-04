@@ -22,7 +22,6 @@ jobs:
     - name: Check code format
       run: cargo fmt --all -- --check
     - name: Clippy
-      continue-on-error: ${{ matrix.rust-toolchain == 'nightly' }}
       run: cargo clippy --all-features
 
   build-rust-apps:
@@ -39,7 +38,7 @@ jobs:
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat, loongarch64-unknown-none
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none-softfloat, loongarch64-unknown-none-softfloat
     - uses: Swatinem/rust-cache@v2
       with:
         shared-key: cargo-bin-cache
@@ -96,7 +95,7 @@ jobs:
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat, loongarch64-unknown-none
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none-softfloat, loongarch64-unknown-none-softfloat
     - uses: arceos-org/setup-musl@v1
       with:
         arch: ${{ matrix.arch }}
@@ -137,7 +136,7 @@ jobs:
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none, aarch64-unknown-none-softfloat
+        targets: x86_64-unknown-none, aarch64-unknown-none-softfloat
     - uses: arceos-org/setup-musl@v1
       with:
         arch: x86_64
@@ -147,29 +146,30 @@ jobs:
         cache-targets: false
     - run: cargo install cargo-binutils
     - run: ./scripts/get_deps.sh
-
+    - name: Export config path for x86_64-pc-oslab
+      run: echo "CONFIG_PATH=$(pwd)/.arceos/configs/custom/x86_64-pc-oslab.toml" >> $GITHUB_ENV
     - name: Build rust/helloworld for x86_64-pc-oslab
-      run: make PLATFORM=x86_64-pc-oslab A=rust/helloworld
+      run: make PLAT_CONFIG=$CONFIG_PATH A=rust/helloworld
     - name: Build rust/net/httpserver for x86_64-pc-oslab
-      run: make PLATFORM=x86_64-pc-oslab A=rust/net/httpserver FEATURES=driver-ixgbe
+      run: make PLAT_CONFIG=$CONFIG_PATH  A=rust/net/httpserver FEATURES=driver-ixgbe
     - name: Build c/iperf for x86_64-pc-oslab
-      run: make PLATFORM=x86_64-pc-oslab A=c/iperf FEATURES=driver-ixgbe,driver-ramdisk
+      run: make PLAT_CONFIG=$CONFIG_PATH  A=c/iperf FEATURES=driver-ixgbe,driver-ramdisk
     - name: Build c/redis for x86_64-pc-oslab
-      run: make PLATFORM=x86_64-pc-oslab A=c/redis FEATURES=driver-ixgbe,driver-ramdisk SMP=4
+      run: make PLAT_CONFIG=$CONFIG_PATH  A=c/redis FEATURES=driver-ixgbe,driver-ramdisk SMP=4
 
-    - run: make PLATFORM=aarch64-raspi4 defconfig
+    - run: make MYPLAT=axplat-aarch64-raspi defconfig
     - name: Build rust/helloworld for aarch64-raspi4
-      run: make PLATFORM=aarch64-raspi4 SMP=4 A=rust/helloworld
+      run: make MYPLAT=axplat-aarch64-raspi  A=rust/helloworld
     - name: Build rust/fs/shell for aarch64-raspi4
-      run: make PLATFORM=aarch64-raspi4 SMP=4 A=rust/fs/shell FEATURES=driver-bcm2835-sdhci BUS=mmio
+      run: make MYPLAT=axplat-aarch64-raspi A=rust/fs/shell FEATURES=driver-bcm2835-sdhci BUS=mmio
 
-    - run: make PLATFORM=aarch64-bsta1000b defconfig
+    - run: make MYPLAT=axplat-aarch64-bsta1000b defconfig
     - name: Build rust/helloworld for aarch64-bsta1000b
-      run: make PLATFORM=aarch64-bsta1000b SMP=8 A=rust/helloworld
+      run: make MYPLAT=axplat-aarch64-bsta1000b A=rust/helloworld
 
-    - run: make PLATFORM=aarch64-phytium-pi defconfig
+    - run: make MYPLAT=axplat-aarch64-phytium-pi defconfig
     - name: Build rust/helloworld for aarch64-phytium-pi
-      run: make PLATFORM=aarch64-phytium-pi SMP=4 A=rust/helloworld
+      run: make MYPLAT=axplat-aarch64-phytium-pi A=rust/helloworld
 
   build-for-std:
     runs-on: ${{ matrix.os }}
@@ -184,7 +184,6 @@ jobs:
       with:
         toolchain: ${{ matrix.rust-toolchain }}
     - name: Build apps for std
-      continue-on-error: ${{ matrix.rust-toolchain == 'nightly' }}
       run: |
         ./scripts/get_deps.sh
         cargo build --all --exclude arceos-display

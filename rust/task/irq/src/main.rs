@@ -132,6 +132,7 @@ fn main() {
 
     test_yielding();
     test_sleep();
+    #[cfg(feature = "axstd")]
     test_wait_queue();
 
     println!("Task irq state tests run OK!");
