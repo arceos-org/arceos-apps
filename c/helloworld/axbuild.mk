@@ -1,0 +1,1 @@
+app-objs := helloworld.o
