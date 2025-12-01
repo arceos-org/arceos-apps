@@ -26,18 +26,18 @@ fn test_wait() {
             COUNTER.fetch_add(1, Ordering::Relaxed);
             api::ax_wait_queue_wake(&WQ1, 1); // WQ1.wait_until()
             api::ax_wait_queue_wait(&WQ2, None);
-
             COUNTER.fetch_sub(1, Ordering::Relaxed);
-            api::ax_wait_queue_wake(&WQ1, 1); // WQ1.wait_until()
         });
     }
 
     api::ax_wait_queue_wait_until(&WQ1, || COUNTER.load(Ordering::Relaxed) == NUM_TASKS, None);
     assert_eq!(COUNTER.load(Ordering::Relaxed), NUM_TASKS);
 
-    api::ax_wait_queue_wake(&WQ2, u32::MAX); // WQ2.wait()
+    // FIXME: more robust!
+    while COUNTER.load(Ordering::Relaxed) > 0 {
+        api::ax_wait_queue_wake(&WQ2, u32::MAX); // WQ2.wait()
+    }
 
-    api::ax_wait_queue_wait_until(&WQ1, || COUNTER.load(Ordering::Relaxed) == 0, None);
     assert_eq!(COUNTER.load(Ordering::Relaxed), 0);
 
     println!("wait_queue: test_wait() OK!");

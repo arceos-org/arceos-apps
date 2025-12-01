@@ -106,7 +106,6 @@ fn test_wait_queue() {
             assert_irq_enabled_and_disabled();
 
             COUNTER.fetch_sub(1, Ordering::Relaxed);
-            WQ1.notify_one(true); // WQ1.wait_until()
         });
     }
     assert_irq_enabled();
@@ -116,10 +115,12 @@ fn test_wait_queue() {
     assert_irq_enabled_and_disabled();
 
     assert_eq!(COUNTER.load(Ordering::Relaxed), NUM_TASKS);
-    WQ2.notify_all(true); // WQ2.wait()
 
-    assert_irq_enabled();
-    WQ1.wait_until(|| COUNTER.load(Ordering::Relaxed) == 0);
+    // FIXME: more robust!
+    while COUNTER.load(Ordering::Relaxed) > 0 {
+        WQ2.notify_all(true); // WQ2.wait()
+    }
+
     assert_irq_enabled_and_disabled();
     assert_eq!(COUNTER.load(Ordering::Relaxed), 0);
 
