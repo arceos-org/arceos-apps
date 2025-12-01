@@ -3,7 +3,7 @@ name: Test CI
 on: [push, pull_request]
 
 env:
-  qemu-version: 9.2.4
+  qemu-version: 10.1.0
 
 jobs:
   app-test:
@@ -12,27 +12,23 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64, loongarch64]
+        arch: [riscv64, aarch64, loongarch64, x86_64]
     steps:
     - uses: actions/checkout@v4
-    - uses: dtolnay/rust-toolchain@stable
       with:
-        toolchain: nightly
-        components: rust-src
+        submodules: "recursive"
     - uses: Swatinem/rust-cache@v2
       with:
         shared-key: cargo-bin-cache
         cache-targets: false
-    - run: cargo install cargo-binutils
     - uses: arceos-org/setup-qemu@v1
       with:
         version: ${{ env.qemu-version }}
-        arch_list: x86_64,aarch64,riscv64,loongarch64
+        arch_list: ${{ matrix.arch }}
     - uses: arceos-org/setup-musl@v1
       with:
         arch: ${{ matrix.arch }}
     - name: Run app tests
       run: |
-        ./scripts/get_deps.sh
         make disk_img
         make test ARCH=${{ matrix.arch }}

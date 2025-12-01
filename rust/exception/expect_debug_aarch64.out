@@ -16,6 +16,6 @@ Primary CPU 0 init OK.
 Running exception tests...
 BRK #0x0 @ 0x[0-9a-f]\{16\}
 Breakpoint test OK!
-Page fault @ VA:0xdeadbeef, access_flags: WRITE, is_user: false
+Page fault @ VA:0xdeadbeef, access_flags: WRITE
 Page fault test OK!
 Shutting down...

@@ -1,0 +1,4 @@
+[submodule "arceos"]
+	path = arceos
+	url = https://github.com/arceos-org/arceos.git
+	branch = dev
