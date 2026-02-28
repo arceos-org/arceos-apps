@@ -20,8 +20,7 @@ macro_rules! path_to_str {
 
 mod cmd;
 
-#[cfg(feature = "use-ramfs")]
-mod ramfs;
+
 
 use std::io::prelude::*;
 
