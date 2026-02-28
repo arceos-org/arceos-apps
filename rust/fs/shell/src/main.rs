@@ -20,8 +20,6 @@ macro_rules! path_to_str {
 
 mod cmd;
 
-
-
 use std::io::prelude::*;
 
 const LF: u8 = b'\n';

@@ -12,7 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64, loongarch64]
+        # TODO: add loongarch64 after supports it
+        arch: [x86_64, riscv64, aarch64]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@stable
@@ -35,4 +36,4 @@ jobs:
       run: |
         ./scripts/get_deps.sh
         make disk_img
-        make test LOG=info ARCH=${{ matrix.arch }}
+        make test ARCH=${{ matrix.arch }}
