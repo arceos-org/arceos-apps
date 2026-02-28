@@ -5,6 +5,8 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
+#[cfg(feature = "axstd")]
+use std::sync::atomic::AtomicBool;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::thread;
 
@@ -87,6 +89,7 @@ fn test_wait_queue() {
     static WQ2: WaitQueue = WaitQueue::new();
     static WQ3: WaitQueue = WaitQueue::new();
     static COUNTER: AtomicUsize = AtomicUsize::new(0);
+    static GO: AtomicBool = AtomicBool::new(false);
 
     println!("Hello, main task test_wait_queue()!");
 
@@ -101,7 +104,7 @@ fn test_wait_queue() {
             COUNTER.fetch_add(1, Ordering::Relaxed);
             WQ1.notify_one(true); // WQ1.wait_until()
             assert_irq_enabled();
-            WQ2.wait();
+            WQ2.wait_until(|| GO.load(Ordering::Acquire));
 
             assert_irq_enabled_and_disabled();
 
@@ -116,7 +119,8 @@ fn test_wait_queue() {
     assert_irq_enabled_and_disabled();
 
     assert_eq!(COUNTER.load(Ordering::Relaxed), NUM_TASKS);
-    WQ2.notify_all(true); // WQ2.wait()
+    GO.store(true, Ordering::Release);
+    WQ2.notify_all(true); // WQ2.wait_until()
 
     assert_irq_enabled();
     WQ1.wait_until(|| COUNTER.load(Ordering::Relaxed) == 0);
