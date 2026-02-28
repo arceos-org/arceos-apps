@@ -87,7 +87,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64, loongarch64]
+        # TODO: add riscv64 after supports it
+        arch: [x86_64, aarch64, loongarch64]
         rust-toolchain: [nightly]
     steps:
     - uses: actions/checkout@v4
@@ -110,9 +111,8 @@ jobs:
       run: make ARCH=${{ matrix.arch }} A=c/helloworld
     - name: Build c/memtest
       run: make ARCH=${{ matrix.arch }} A=c/memtest
-    # TODO: riscv failed
-    # - name: Build c/sqlite3
-    #   run: make ARCH=${{ matrix.arch }} A=c/sqlite3
+    - name: Build c/sqlite3
+      run: make ARCH=${{ matrix.arch }} A=c/sqlite3
     - name: Build c/httpclient
       run: make ARCH=${{ matrix.arch }} A=c/httpclient
     - name: Build c/httpserver

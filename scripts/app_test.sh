@@ -4,6 +4,7 @@ APP=
 ROOT=$(realpath $(dirname $0))/../
 TIMEOUT=60s
 EXIT_STATUS=0
+FAIL_FAST=${FAIL_FAST:-1}
 
 S_PASS=0
 S_FAILED=1
@@ -105,6 +106,10 @@ function test_one() {
         fi
         echo -e "${RED_C}actual output${END_C}:"
         cat "$actual"
+        if [ "$FAIL_FAST" != "0" ]; then
+            echo -e "test script exited with: $EXIT_STATUS"
+            exit $EXIT_STATUS
+        fi
     else
         echo -e "${GREEN_C}passed!${END_C} $RUN_TIME"
         rm -f "$actual"

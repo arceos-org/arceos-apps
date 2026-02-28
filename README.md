@@ -71,6 +71,20 @@ make A=rust/net/httpserver ARCH=aarch64 LOG=info SMP=4 run NET=y
 
 Note that the `NET=y` argument is required to enable the network device in QEMU. These arguments (`BLK`, `GRAPHIC`, etc.) only take effect at runtime not build time.
 
+### 3. Run Tests
+
+```bash
+make test
+```
+
+By default, the test script is fail-fast: it exits immediately when any test fails.
+
+To continue running all tests even if some fail:
+
+```bash
+FAIL_FAST=0 make test
+```
+
 ## List of Rust Apps
 
 | App | `axstd` features | Extra modules | Description |
