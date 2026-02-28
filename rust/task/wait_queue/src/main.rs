@@ -19,13 +19,14 @@ fn test_wait() {
     static WQ1: AxWaitQueueHandle = AxWaitQueueHandle::new();
     static WQ2: AxWaitQueueHandle = AxWaitQueueHandle::new();
     static COUNTER: AtomicUsize = AtomicUsize::new(0);
+    static GO: AtomicBool = AtomicBool::new(false);
     println!("wait_queue: test_wait()");
 
     for _ in 0..NUM_TASKS {
         thread::spawn(move || {
             COUNTER.fetch_add(1, Ordering::Relaxed);
             api::ax_wait_queue_wake(&WQ1, 1); // WQ1.wait_until()
-            api::ax_wait_queue_wait(&WQ2, None);
+            api::ax_wait_queue_wait_until(&WQ2, || GO.load(Ordering::Acquire), None);
 
             COUNTER.fetch_sub(1, Ordering::Relaxed);
             api::ax_wait_queue_wake(&WQ1, 1); // WQ1.wait_until()
@@ -35,7 +36,8 @@ fn test_wait() {
     api::ax_wait_queue_wait_until(&WQ1, || COUNTER.load(Ordering::Relaxed) == NUM_TASKS, None);
     assert_eq!(COUNTER.load(Ordering::Relaxed), NUM_TASKS);
 
-    api::ax_wait_queue_wake(&WQ2, u32::MAX); // WQ2.wait()
+    GO.store(true, Ordering::Release);
+    api::ax_wait_queue_wake(&WQ2, u32::MAX); // WQ2.wait_until()
 
     api::ax_wait_queue_wait_until(&WQ1, || COUNTER.load(Ordering::Relaxed) == 0, None);
     assert_eq!(COUNTER.load(Ordering::Relaxed), 0);
@@ -172,3 +174,4 @@ fn main() {
     #[cfg(feature = "axstd")]
     test_wait_timeout_until();
 }
+
