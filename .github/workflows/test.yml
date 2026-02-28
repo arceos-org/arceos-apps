@@ -12,8 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        # TODO: add loongarch64 after supports it
-        arch: [x86_64, riscv64, aarch64]
+        # TODO: add loongarch64, x86_64 after supports it
+        arch: [riscv64, aarch64]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@stable
