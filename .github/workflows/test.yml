@@ -3,7 +3,7 @@ name: Test CI
 on: [push, pull_request]
 
 env:
-  qemu-version: 9.2.4
+  qemu-version: 10.2.1
 
 jobs:
   app-test:
