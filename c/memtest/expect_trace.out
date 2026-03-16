@@ -26,17 +26,17 @@ map_region(PA:0x[0-9a-f]\+): \[0x[0-9a-f]\+, 0x[0-9a-f]\+) READ | WRITE | DEVICE
 map_region(PA:0x[0-9a-f]\+): \[0x[0-9a-f]\+, 0x[0-9a-f]\+) READ | WRITE
 Primary CPU 0 init OK.
 Running memory tests...
-top of heap=0x[0-9a-f]\{16\}
-72(+8)Byte allocated: p=0x[0-9a-f]\{16\}
+top of heap=0x[0-9a-f]\{8,16\}
+72(+8)Byte allocated: p=0x[0-9a-f]\{8,16\}
 allocate 8(+8)Byte for 9 times:
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
-allocated addr=0x[0-9a-f]\{16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
+allocated addr=0x[0-9a-f]\{8,16\}
 Memory tests run OK!
 Shutting down...

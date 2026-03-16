@@ -25,3 +25,7 @@ exclude = [".arceos"]
 
 [workspace.dependencies]
 axstd = { git = "https://github.com/arceos-org/arceos.git" }
+
+[patch.crates-io]
+axcpu ={ git = "https://github.com/luodeb/axcpu.git" }
+axplat-arm-qemu-virt = { git = "https://github.com/luodeb/axplat_crates.git", branch = "arm32" }
