@@ -25,9 +25,3 @@ exclude = [".arceos"]
 
 [workspace.dependencies]
 axstd = { git = "https://github.com/arceos-org/arceos.git" }
-
-[patch.crates-io]
-axcpu ={ git = "https://github.com/luodeb/axcpu.git" }
-axplat = { git = "https://github.com/luodeb/axplat_crates.git", rev = "2b648a3350987ee9ca615613ae30f430eb412bb7" }
-axplat-x86-pc = { git = "https://github.com/luodeb/axplat_crates.git", rev = "2b648a3350987ee9ca615613ae30f430eb412bb7" }
-axplat-arm-qemu-virt = { git = "https://github.com/luodeb/axplat_crates.git", rev = "2b648a3350987ee9ca615613ae30f430eb412bb7" }
