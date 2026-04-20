@@ -12,6 +12,18 @@ redis-build-args := \
   USE_JEMALLOC=no \
   -j
 
+ifeq ($(ARCH), arm)
+libatomic := $(shell $(CC) -print-file-name=libatomic.a)
+ifneq ($(libatomic),libatomic.a)
+	libgcc += $(libatomic)
+endif
+
+libgcc-path := $(shell $(CC) -print-libgcc-file-name)
+ifneq ($(libgcc-path),)
+	libgcc += $(libgcc-path)
+endif
+endif
+
 ifneq ($(V),)
   redis-build-args += V=$(V)
 endif
