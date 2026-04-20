@@ -55,6 +55,6 @@ part 11: ThreadId([0-9]\+) finished
 part 12: ThreadId([0-9]\+) finished
 part 13: ThreadId([0-9]\+) finished
 part 14: ThreadId([0-9]\+) finished
-sum = \(87362923216\|87403993023\)
+sum = 87412767468
 Parallel summation tests run OK!
 Shutting down...
