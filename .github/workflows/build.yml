@@ -22,7 +22,7 @@ jobs:
     - name: Check code format
       run: cargo fmt --all -- --check
     - name: Clippy
-      run: cargo clippy --all-features
+      run: cargo +nightly-2025-05-20 clippy --all-features
 
   build-rust-apps:
     runs-on: ${{ matrix.os }}
