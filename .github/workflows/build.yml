@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust-toolchain: [nightly]
+        rust-toolchain: [nightly-2025-05-20]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@nightly
@@ -30,15 +30,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64, loongarch64]
-        rust-toolchain: [nightly]
+        arch: [x86_64, riscv64, aarch64, loongarch64, arm]
+        rust-toolchain: [nightly-2025-05-20]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@stable
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none-softfloat, loongarch64-unknown-none-softfloat
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none-softfloat, loongarch64-unknown-none-softfloat, armv7a-none-eabi
     - uses: Swatinem/rust-cache@v2
       with:
         shared-key: cargo-bin-cache
@@ -87,16 +87,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64, loongarch64]
-        rust-toolchain: [nightly]
+        arch: [x86_64, riscv64, aarch64, loongarch64, arm]
+        rust-toolchain: [nightly-2025-05-20]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@stable
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none-softfloat, loongarch64-unknown-none-softfloat
-    - uses: arceos-org/setup-musl@v1
+        targets: x86_64-unknown-none, riscv64gc-unknown-none-elf, aarch64-unknown-none-softfloat, loongarch64-unknown-none-softfloat, armv7a-none-eabi
+    - uses: arceos-org/setup-musl@v1.0.3
       with:
         arch: ${{ matrix.arch }}
     - uses: Swatinem/rust-cache@v2
@@ -129,15 +129,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        rust-toolchain: [nightly]
+        rust-toolchain: [nightly-2025-05-20]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@stable
       with:
         toolchain: ${{ matrix.rust-toolchain }}
         components: rust-src, llvm-tools
-        targets: x86_64-unknown-none, aarch64-unknown-none-softfloat
-    - uses: arceos-org/setup-musl@v1
+        targets: x86_64-unknown-none, aarch64-unknown-none-softfloat, armv7a-none-eabi
+    - uses: arceos-org/setup-musl@v1.0.3
       with:
         arch: x86_64
     - uses: Swatinem/rust-cache@v2
@@ -194,7 +194,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        rust-toolchain: [nightly]
+        rust-toolchain: [nightly-2025-05-20]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@stable

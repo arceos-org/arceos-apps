@@ -2,7 +2,7 @@
 
 APP=
 ROOT=$(realpath $(dirname $0))/../
-TIMEOUT=60s
+TIMEOUT=120s
 EXIT_STATUS=0
 
 S_PASS=0
@@ -20,7 +20,7 @@ END_C="\x1b[0m"
 if [ -z "$ARCH" ]; then
     ARCH=x86_64
 fi
-if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "riscv64" ] && [ "$ARCH" != "aarch64" ] && [ "$ARCH" != "loongarch64" ]; then
+if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "riscv64" ] && [ "$ARCH" != "aarch64" ] && [ "$ARCH" != "arm" ] && [ "$ARCH" != "loongarch64" ]; then
     echo "Unknown architecture: $ARCH"
     exit $S_FAILED
 fi

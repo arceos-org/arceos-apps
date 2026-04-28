@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        arch: [x86_64, riscv64, aarch64, loongarch64]
+        arch: [x86_64, riscv64, aarch64, loongarch64, arm]
     steps:
     - uses: actions/checkout@v4
     - uses: dtolnay/rust-toolchain@stable
@@ -27,8 +27,8 @@ jobs:
     - uses: arceos-org/setup-qemu@v1
       with:
         version: ${{ env.qemu-version }}
-        arch_list: x86_64,aarch64,riscv64,loongarch64
-    - uses: arceos-org/setup-musl@v1
+        arch_list: x86_64,aarch64,riscv64,loongarch64,arm
+    - uses: arceos-org/setup-musl@v1.0.3
       with:
         arch: ${{ matrix.arch }}
     - name: Run app tests

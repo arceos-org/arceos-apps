@@ -5,7 +5,8 @@
 #[cfg(feature = "axstd")]
 extern crate axstd as std;
 
-use rand::{rngs::SmallRng, RngCore, SeedableRng};
+use rand::{RngCore, SeedableRng};
+use rand_xoshiro::Xoshiro128PlusPlus;
 use std::thread;
 use std::{sync::Arc, vec::Vec};
 
@@ -49,7 +50,7 @@ fn sqrt(n: &u64) -> u64 {
 
 #[cfg_attr(feature = "axstd", no_mangle)]
 fn main() {
-    let mut rng = SmallRng::seed_from_u64(0xdead_beef);
+    let mut rng = Xoshiro128PlusPlus::seed_from_u64(0xdead_beef);
     let vec = Arc::new(
         (0..NUM_DATA)
             .map(|_| rng.next_u32() as u64)
